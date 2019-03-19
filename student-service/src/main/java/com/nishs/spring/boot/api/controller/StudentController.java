@@ -20,6 +20,6 @@ public class StudentController {
     @RequestMapping(value = "/getStudentDetails/{name}")
     public Student getStudentDetails(@PathVariable(name = "name") String name)
     {
-        return new Student(name, "Pune", "MCA");
+        return new Student(name, "Bangalore", "BE");
     }
 }
