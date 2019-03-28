@@ -1,6 +1,6 @@
 # microservice-spring-cloud
 
-How to check zuel routing set up?
+How to check zuul routing set up?
 
 run the student service and zuul-proxy-service.
 
