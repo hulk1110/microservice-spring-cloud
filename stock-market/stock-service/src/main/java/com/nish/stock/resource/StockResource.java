@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.nish.stock.model.Quote;
+
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
@@ -24,16 +26,19 @@ public class StockResource {
 	RestTemplate restTemplate;
 
 	@GetMapping("/{username}")
-	public List<Stock> getStock(@PathVariable("username") final String userName) {
+	public List<Quote> getStock(@PathVariable("username") final String userName) {
 
-		ResponseEntity<List<String>> quoteResponse = restTemplate.exchange("http://localhost:8300/rest/db/" + userName,
+		ResponseEntity<List<String>> quoteResponse = restTemplate.exchange("http://db-service/rest/db/" + userName,
 				HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {
 				});
 
 		List<String> quotes = quoteResponse.getBody();
 		return quotes
 				.stream()
-				.map(this::getStockPrice)
+				.map(quote ->{
+					Stock stock = getStockPrice(quote);
+					return new Quote(quote,stock.getQuote().getPrice());
+				})
 				.collect(Collectors.toList());
 	}
 
